@@ -16,12 +16,6 @@ function loadSaved() {
   }
 }
 
-function saveState(state) {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state))
-  } catch {}
-}
-
 function formatBRL(value) {
   return value.toLocaleString('pt-BR', {
     style: 'currency',
@@ -141,15 +135,17 @@ function EarningsCard({ label, value, sublabel, accent }) {
 }
 
 export default function App() {
-  const saved = loadSaved()
-  const [principal, setPrincipalRaw] = useState(saved?.principal ?? 280000)
-  const [cdiRate, setCdiRateRaw] = useState(saved?.cdiRate ?? 14.75)
-  const [cdbOfCdi, setCdbOfCdiRaw] = useState(saved?.cdbOfCdi ?? 101)
+  const [principal, setPrincipal] = useState(() => loadSaved()?.principal ?? 280000)
+  const [cdiRate, setCdiRate]     = useState(() => loadSaved()?.cdiRate   ?? 14.75)
+  const [cdbOfCdi, setCdbOfCdi]   = useState(() => loadSaved()?.cdbOfCdi  ?? 101)
   const [showRates, setShowRates] = useState(false)
 
-  function setPrincipal(v) { setPrincipalRaw(v); saveState({ principal: v, cdiRate, cdbOfCdi }) }
-  function setCdiRate(v)   { setCdiRateRaw(v);   saveState({ principal, cdiRate: v, cdbOfCdi }) }
-  function setCdbOfCdi(v)  { setCdbOfCdiRaw(v);  saveState({ principal, cdiRate, cdbOfCdi: v }) }
+  // Save to localStorage whenever any value changes
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ principal, cdiRate, cdbOfCdi }))
+    } catch {}
+  }, [principal, cdiRate, cdbOfCdi])
 
   const { daily, monthly, annualRate } = calcEarnings(principal, cdiRate, cdbOfCdi)
 
