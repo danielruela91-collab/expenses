@@ -32,7 +32,6 @@ function formatBRL(value) {
 }
 
 function parseBRL(raw) {
-  // Remove currency symbol, dots (thousands), replace comma with dot
   const cleaned = raw.replace(/[R$\s.]/g, '').replace(',', '.')
   const num = parseFloat(cleaned)
   return isNaN(num) ? 0 : num
@@ -164,7 +163,6 @@ export default function App() {
       </header>
 
       <main className="main">
-        {/* Principal Input */}
         <section className="card">
           <h2 className="section-title">Total Investido</h2>
           <CurrencyInput
@@ -175,7 +173,6 @@ export default function App() {
           />
         </section>
 
-        {/* Earnings Display */}
         <section className="earnings-section">
           <EarningsCard
             label="Rendimento por Dia Útil"
@@ -190,7 +187,6 @@ export default function App() {
           />
         </section>
 
-        {/* Rates Toggle */}
         <section className="card">
           <button
             className="toggle-btn"
@@ -224,7 +220,6 @@ export default function App() {
           )}
         </section>
 
-        {/* Year projection */}
         <section className="card projection">
           <h2 className="section-title">Projeção anual</h2>
           <div className="projection-row">
