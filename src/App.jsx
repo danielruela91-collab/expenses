@@ -1,8 +1,26 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
 
 const BUSINESS_DAYS_YEAR = 252
 const BUSINESS_DAYS_MONTH = 22
+
+const STORAGE_KEY = 'cdb_calc_state'
+
+function loadSaved() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY)
+    if (!raw) return null
+    return JSON.parse(raw)
+  } catch {
+    return null
+  }
+}
+
+function saveState(state) {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state))
+  } catch {}
+}
 
 function formatBRL(value) {
   return value.toLocaleString('pt-BR', {
@@ -123,10 +141,15 @@ function EarningsCard({ label, value, sublabel, accent }) {
 }
 
 export default function App() {
-  const [principal, setPrincipal] = useState(280000)
-  const [cdiRate, setCdiRate] = useState(14.75)
-  const [cdbOfCdi, setCdbOfCdi] = useState(101)
+  const saved = loadSaved()
+  const [principal, setPrincipalRaw] = useState(saved?.principal ?? 280000)
+  const [cdiRate, setCdiRateRaw] = useState(saved?.cdiRate ?? 14.75)
+  const [cdbOfCdi, setCdbOfCdiRaw] = useState(saved?.cdbOfCdi ?? 101)
   const [showRates, setShowRates] = useState(false)
+
+  function setPrincipal(v) { setPrincipalRaw(v); saveState({ principal: v, cdiRate, cdbOfCdi }) }
+  function setCdiRate(v)   { setCdiRateRaw(v);   saveState({ principal, cdiRate: v, cdbOfCdi }) }
+  function setCdbOfCdi(v)  { setCdbOfCdiRaw(v);  saveState({ principal, cdiRate, cdbOfCdi: v }) }
 
   const { daily, monthly, annualRate } = calcEarnings(principal, cdiRate, cdbOfCdi)
 
