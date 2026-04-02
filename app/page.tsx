@@ -3,6 +3,7 @@
 import { useState, useCallback, useEffect } from 'react'
 import confetti from 'canvas-confetti'
 import { useShoppingList } from '@/lib/useShoppingList'
+import { getEmoji } from '@/lib/emojiMap'
 
 export default function Home() {
   const { items, mounted, addItem, toggleItem, deleteItem, clearDone } = useShoppingList()
@@ -85,7 +86,10 @@ export default function Home() {
                         onChange={() => handleToggleItem(item.id)}
                         className="w-5 h-5 rounded cursor-pointer accent-indigo-500"
                       />
-                      <span className="flex-1 text-gray-100">{item.name}</span>
+                      <span className="flex-1 text-gray-100">
+                        {getEmoji(item.name) && <span className="mr-2">{getEmoji(item.name)}</span>}
+                        {item.name}
+                      </span>
                       <button
                         onClick={() => deleteItem(item.id)}
                         className="text-gray-500 hover:text-red-400 opacity-0 group-hover:opacity-100 transition-opacity"
@@ -115,7 +119,10 @@ export default function Home() {
                         onChange={() => handleToggleItem(item.id)}
                         className="w-5 h-5 rounded cursor-pointer accent-indigo-500"
                       />
-                      <span className="flex-1 text-gray-100 line-through">{item.name}</span>
+                      <span className="flex-1 text-gray-100 line-through">
+                        {getEmoji(item.name) && <span className="mr-2">{getEmoji(item.name)}</span>}
+                        {item.name}
+                      </span>
                       <button
                         onClick={() => deleteItem(item.id)}
                         className="text-gray-500 hover:text-red-400 opacity-0 group-hover:opacity-100 transition-opacity"
