@@ -80,11 +80,10 @@ export default function Home() {
                       key={item.id}
                       className="flex items-center gap-3 bg-gray-800 rounded-lg p-4 hover:bg-gray-750 transition-colors group"
                     >
-                      <input
-                        type="checkbox"
-                        checked={false}
-                        onChange={() => handleToggleItem(item.id)}
-                        className="w-5 h-5 rounded cursor-pointer accent-indigo-500"
+                      <button
+                        onClick={() => handleToggleItem(item.id)}
+                        className="w-5 h-5 rounded border-2 border-gray-600 flex-shrink-0 cursor-pointer hover:border-indigo-400 transition-colors bg-transparent"
+                        aria-label="Marcar como comprado"
                       />
                       <span className="flex-1 text-gray-100">
                         {getEmoji(item.name) && <span className="mr-2">{getEmoji(item.name)}</span>}
@@ -113,12 +112,15 @@ export default function Home() {
                       key={item.id}
                       className="flex items-center gap-3 bg-gray-800 rounded-lg p-4 opacity-60 hover:bg-gray-750 transition-colors group"
                     >
-                      <input
-                        type="checkbox"
-                        checked={true}
-                        onChange={() => handleToggleItem(item.id)}
-                        className="w-5 h-5 rounded cursor-pointer accent-indigo-500"
-                      />
+                      <button
+                        onClick={() => handleToggleItem(item.id)}
+                        className="w-5 h-5 rounded border-2 border-indigo-500 bg-indigo-600 flex-shrink-0 cursor-pointer flex items-center justify-center hover:bg-indigo-500 transition-colors"
+                        aria-label="Desmarcar"
+                      >
+                        <svg className="w-3 h-3 text-white" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <polyline points="2,6 5,9 10,3" />
+                        </svg>
+                      </button>
                       <span className="flex-1 text-gray-100 line-through">
                         {getEmoji(item.name) && <span className="mr-2">{getEmoji(item.name)}</span>}
                         {item.name}
