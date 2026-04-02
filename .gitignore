@@ -9,6 +9,7 @@
 # next.js
 /.next/
 /out/
+expense-splitter/.next/
 
 # production
 /build
